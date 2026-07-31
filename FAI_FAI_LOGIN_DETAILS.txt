@@ -1,0 +1,15 @@
+FAI FAI JUICE LOGIN DETAILS
+
+Admin URL: /admin
+Username: faifaiadmin
+Password: FaiFai@2026
+
+Kitchen URL: /kitchen
+Kitchen PIN: 1122
+
+Customer URL: /
+Rider URL: /rider
+Receipt Settings: /admin/settings/receipt
+
+Phone: +971521091092
+Address: Murbah, Fujairah, UAE

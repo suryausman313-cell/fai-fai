@@ -1,0 +1,207 @@
+FAI FAI JUICE — STANDALONE SECOND SHOP APP
+
+SHOP DETAILS
+Shop name: Fai Fai Juice
+Customer app name: Fai Fai Juice
+Phone: +971521091092
+Address: Murbah, Fujairah, UAE
+Kitchen PIN: 1122
+
+ADMIN LOGIN
+Username: faifaiadmin
+Password: FaiFai@2026
+
+PANELS / LINKS (deployment ke baad apne Cloudflare domain ke saath)
+Customer: /
+Admin: /admin
+Kitchen: /kitchen
+Rider: /rider
+Receipt settings: /admin/settings/receipt
+
+IMPORTANT
+- Is project ko Vita Napoli ke existing GitHub repository me upload NAHI karna.
+- Iske liye naya GitHub repository, naya Render backend aur naya Neon database banana hai.
+- Is tarah Vita Napoli normal chalti rahegi aur Fai Fai Juice bilkul alag chalegi.
+- Temporary Fai Fai logo/icon package me diya gaya hai. Original logo milne par badal sakte hain.
+- Ye standalone second-shop copy hai. Iska Admin Fai Fai ka full Super Admin hai, lekin abhi ek central dashboard se Vita Napoli aur Fai Fai dono control nahi honge. Central multi-shop Super Admin alag phase hai.
+
+============================================================
+STEP 1 — NEW GITHUB REPOSITORY
+============================================================
+
+1. GitHub kholo.
+2. New repository banao.
+3. Repository name rakho:
+   fai-fai-juice
+4. Public ya Private select karo.
+5. Create repository dabao.
+6. Is ZIP ko computer me Extract All karo.
+7. Extracted folder ke andar ke tamam files/folders new repository me upload karo.
+8. Current Vita Napoli repository ko touch mat karo.
+
+Final repository me root par ye nazar aana chahiye:
+- app
+- assets
+- uploads
+- .atoms
+- START_HERE_ROMAN_URDU.txt
+
+============================================================
+STEP 2 — NEW NEON DATABASE
+============================================================
+
+1. Neon kholo.
+2. New Project banao: fai-fai-juice
+3. PostgreSQL connection string copy karo.
+4. Vita Napoli ka DATABASE_URL use mat karo.
+
+============================================================
+STEP 3 — NEW RENDER BACKEND
+============================================================
+
+1. Render > New > Web Service.
+2. New fai-fai-juice GitHub repository connect karo.
+3. Service name: fai-fai-juice-backend
+4. Root Directory:
+   app/backend
+5. Build Command:
+   pip install -r requirements.txt
+6. Start Command:
+   uvicorn main:app --host 0.0.0.0 --port $PORT
+7. Environment Variables:
+
+   DATABASE_URL = NEW Fai Fai Neon connection string
+   JWT_SECRET_KEY = koi lamba random secret
+   KITCHEN_PIN = 1122
+   ENVIRONMENT = prod
+
+FIRST DEPLOYMENT PAR:
+MGX_IGNORE_INIT_DATA variable abhi MAT lagana.
+Isse Fai Fai starter categories, juice menu, extras aur settings new database me banengi.
+
+8. Deploy karo aur Render Live hone do.
+9. Render ka backend URL copy karo, example:
+   https://fai-fai-juice-backend.onrender.com
+10. Render variables me add karo:
+
+   PYTHON_BACKEND_URL = apna Render backend URL
+   FRONTEND_URL = Cloudflare URL baad me add hoga
+   MGX_IGNORE_INIT_DATA = 1
+
+11. Save/redeploy karo.
+
+Backend test:
+https://YOUR-BACKEND.onrender.com/api/v1/receipt-settings
+
+JSON me Fai Fai Juice aur printer settings nazar aani chahiye.
+
+============================================================
+STEP 4 — NEW CLOUDFLARE FRONTEND
+============================================================
+
+1. Cloudflare > Workers & Pages.
+2. Create > Pages > Connect to Git.
+3. New fai-fai-juice repository select karo.
+4. Project name: fai-fai-juice
+5. Root Directory:
+   app/frontend
+6. Framework preset:
+   Vite
+7. Build Command:
+   npm install && npm run build
+8. Build Output Directory:
+   dist
+9. Environment Variable:
+   VITE_API_BASE_URL = apna NEW Fai Fai Render backend URL
+10. Deploy karo aur Success hone do.
+
+Cloudflare URL example:
+https://fai-fai-juice.pages.dev
+
+Phir Render me FRONTEND_URL ko isi URL par set karo.
+
+============================================================
+STEP 5 — LOGIN AND TEST
+============================================================
+
+Admin:
+https://YOUR-FAI-FAI-DOMAIN/admin
+Username: faifaiadmin
+Password: FaiFai@2026
+
+Kitchen:
+https://YOUR-FAI-FAI-DOMAIN/kitchen
+PIN: 1122
+
+Rider:
+https://YOUR-FAI-FAI-DOMAIN/rider
+
+Customer:
+https://YOUR-FAI-FAI-DOMAIN/
+
+TEST ORDER FLOW
+1. Customer app se test order place karo.
+2. Admin me order show hona chahiye.
+3. Kitchen Live Orders me order show aur sound aani chahiye.
+4. Accept > Preparing > Ready > Completed test karo.
+5. Today aur Yesterday Kitchen history check karo.
+6. Rider delivery flow test karo.
+
+============================================================
+STARTER MENU
+============================================================
+
+Categories:
+- Fresh Juices
+- Milkshakes
+- Smoothies
+- Mojitos
+
+Starter products include:
+- Orange Juice
+- Mango Juice
+- Avocado Juice
+- Watermelon Juice
+- Banana Milkshake
+- Oreo Milkshake
+- Mixed Berry Smoothie
+- Tropical Smoothie
+- Mint Lemon Mojito
+- Passion Fruit Mojito
+
+Admin se sab items edit/delete karke real Fai Fai menu add kar sakte ho.
+
+============================================================
+PRINTER
+============================================================
+
+Admin > Settings > Receipt & Printer
+Default:
+Printer IP: 192.168.70.125
+Port: 9100
+Paper: 80mm
+Auto Print on Accept: ON
+
+Printer IP baad me change ho to Admin settings me naya IP likh kar Save karna hai; website code dobara change nahi karna.
+Direct silent print ke liye Android Kitchen Print app/bridge ki zaroorat rahegi. Browser mode me normal print preview khul sakta hai.
+
+============================================================
+LOGO
+============================================================
+
+Abhi temporary FF juice logo included hai:
+app/frontend/public/logo-fai-fai.png
+app/frontend/public/icon-192.png
+app/frontend/public/icon-512.png
+
+Original Fai Fai logo milne par in files ko same names ke saath replace kiya ja sakta hai.
+Receipt logo Admin > Settings > Receipt & Printer se bhi upload ho sakta hai.
+
+============================================================
+PACKAGE CHECK
+============================================================
+
+- Frontend TS/TSX syntax check passed.
+- Backend Python syntax check passed.
+- Full npm production build is environment me package registry unavailable hone ki wajah se run nahi ho saka; Cloudflare deployment final dependency/build test karega.
+- Package user ki uploaded Vita Napoli ZIP par based hai aur latest Kitchen visibility, sound-safe screen, Today/Yesterday history aur receipt settings files add ki gayi hain.
